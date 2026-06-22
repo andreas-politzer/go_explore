@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoExplore Project Roadmap</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --neon-green: #00ff66;
+            --text-color: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --border-color: #2a2a2a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--neon-green);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: #ffffff;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: var(--neon-green);
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .meta-info {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        h2 {
+            color: #ffffff;
+            border-left: 4px solid var(--neon-green);
+            padding-left: 15px;
+            margin-top: 40px;
+        }
+
+        h3 {
+            color: var(--neon-green);
+            margin-bottom: 5px;
+        }
+
+        p {
+            color: var(--text-color);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--neon-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 255, 102, 0.1);
+        }
+
+        .day-badge {
+            background-color: rgba(0, 255, 102, 0.1);
+            color: var(--neon-green);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 10px;
+            border: 1px solid var(--neon-green);
+        }
+
+        .kpi-box {
+            background-color: #181818;
+            border-left: 3px solid var(--text-muted);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .kpi-box h4 {
+            margin: 0 0 5px 0;
+            color: #ffffff;
+        }
+
+        .formula {
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--neon-green);
+            background: #252525;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>GoExplore Analytics Architecture</h1>
+        <div class="subtitle">10-Day Project Roadmap & Executive Strategy</div>
+        <div class="meta-info">Stack: Google Sheets ➔ BigQuery (SQL) ➔ Data Studio | Team: WBS Analytics Quartet</div>
+    </header>
+
+    <h2>1. Data Pipeline & Workflow</h2>
+    <p>Our approach shifts the focus from manual spreadsheet calculation to an automated cloud infrastructure. We treat raw tables as database relations, ensuring scalable, reproducible analytics for CEO Sabah.</p>
+
+    <h2>2. Tight 10-Day Sprint Timeline</h2>
+    <div class="grid">
+        
+        <div class="card">
+            <span class="day-badge">Day 1 (Today)</span>
+            <h3>Data Discovery & External Enrichment</h3>
+            <p>Setup of the centralized Google Sheet. Manual collection and ingestion of macroeconomic markers (Population and GDP figures for Germany, France, Sweden, and expansion targets: Czech Republic, Norway, Poland, Portugal) from open statistical databases.</p>
+        </div>
+
+        <div class="card">
+            <span class="day-badge">Day 2 - 3</span>
+            <h3>Cloud Ingestion & Table Linking</h3>
+            <p>Connecting the centralized Google Sheet to Google BigQuery as a live data abstraction layer. Verification of schemas, primary/foreign keys, and data types across the operational tables.</p>
+        </div>
+
+        <div class="card">
+            <span class="day-badge">Day 4 - 5</span>
+            <h3>Backend Engineering (SQL Development)</h3>
+            <p>Writing and optimizing structured SQL queries in BigQuery to handle relational <code>LEFT JOINs</code> and complex conditional aggregations for the business layers.</p>
+        </div>
+
+        <div class="card">
+            <span class="day-badge">Day 6 - 7</span>
+            <h3>Frontend Architecture (Data Studio UI)</h3>
+            <p>Linking BigQuery analytical views directly to Google Data Studio. Building dynamic cross-filters, interactive geographical components, and structural performance metrics.</p>
+        </div>
+
+        <div class="card">
+            <span class="day-badge">Day 8 - 9</span>
+            <h3>Insight Extraction & Storytelling Synthesis</h3>
+            <p>Analyzing dashboard results to extract concrete business suggestions for Sabah. Drafting the non-technical executive pitch script to ensure maximum strategic impact.</p>
+        </div>
+
+        <div class="card" style="border-color: #ff3366;">
+            <span class="day-badge" style="color: #ff3366; background: rgba(255,51,102,0.1); border-color: #ff3366;">Day 10</span>
+            <h3>Dry Runs, Technical Audit & Showdown</h3>
+            <p><strong>Morning:</strong> Complete system integration check, full technical dry runs, and team rehearsal of the presentation layout.<br><strong>Afternoon:</strong> Final live presentation to CEO Sabah and the executive board.</p>
+        </div>
+
+    </div>
+
+    <h2>3. Targeted KPI Framework</h2>
+    <p>A collection of 5 key business metrics carefully split between geographical expansion data and B2B distributor network performance.</p>
+
+    <div class="kpi-box">
+        <h4>KPI 1: Revenue per Capita (Demographic Multiplier)</h4>
+        <p>Establishes the historical income generated per 1 Million citizens in active markets (e.g., Sweden) to build a robust baseline expectation for new frontiers.</p>
+        <div class="formula">Formula: Total Country Revenue / Country Population (Millions)</div>
+    </div>
+
+    <div class="kpi-box">
+        <h4>KPI 2: Revenue-to-GDP Elasticity Index (Purchasing Power Alignment)</h4>
+        <p>Safeguards expansion margins by mapping historical sales explicitly against national wealth index parameters, isolating premium consumer potential in countries like Norway.</p>
+        <div class="formula">Formula: Total Country Revenue / National GDP (Billions USD)</div>
+    </div>
+
+    <div class="kpi-box">
+        <h4>KPI 3: Average Order Value (AOV) by Retailer Segment</h4>
+        <p>Directly answers whether specialty retail stores (e.g., Golf, Eyewear) process larger basket sizes compared to general sports and outdoor retailers.</p>
+        <div class="formula">Formula: Total Segment Revenue / Total Segment Order Count</div>
+    </div>
+
+    <div class="kpi-box">
+        <h4>KPI 4: Order Frequency Density (Operational Efficiency)</h4>
+        <p>Measures the purchasing consistency across distributors, identifying low-maintenance high-volume partners versus resource-intensive micro-accounts.</p>
+        <div class="formula">Formula: Total Transaction Records / Count of Unique Active Stores</div>
+    </div>
+
+    <div class="kpi-box">
+        <h4>KPI 5: Digital Channel Penetration Rate</h4>
+        <p>Tracks the operational automation level of incoming orders, monitoring what percentage of total business scales cleanly through automated web infrastructure.</p>
+        <div class="formula">Formula: (Web Revenue / Total Revenue All Channels) * 100</div>
+    </div>
+
+    <footer>
+        GoExplore Executive Strategy Blueprint &copy; 2026 - Designed for Agile Business Intelligence
+    </footer>
+</div>
+
+</body>
+</html>
