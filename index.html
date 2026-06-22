@@ -3,19 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoExplore Project Roadmap</title>
+    <title>The Lobster Lookers - GoExplore Analytics Architecture</title>
     <style>
         :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
+            --bg-color: #0a0b10;
+            --card-bg: #12141c;
             --neon-green: #00ff66;
-            --text-color: #e0e0e0;
-            --text-muted: #a0a0a0;
-            --border-color: #2a2a2a;
+            --cyber-pink: #ff0055;
+            --cyber-blue: #00f0ff;
+            --text-color: #e2e8f0;
+            --text-muted: #8a99ad;
+            --border-color: #1f2433;
+            --warning-orange: #ff9900;
+            --sql-bg: #07080c;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
@@ -24,115 +28,333 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 40px auto;
-            padding: 0 20px;
+            padding: 0 24px;
         }
 
         header {
             text-align: center;
             border-bottom: 2px solid var(--neon-green);
-            padding-bottom: 20px;
+            padding-bottom: 30px;
             margin-bottom: 40px;
+            position: relative;
+        }
+
+        .lobster-container {
+            margin: 0 auto 20px auto;
+            width: 160px;
+            height: 160px;
+        }
+
+        .lobster-logo {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 15px var(--cyber-pink));
         }
 
         h1 {
+            font-size: 2.8rem;
             color: #ffffff;
-            margin-bottom: 5px;
-            letter-spacing: 1px;
+            margin: 10px 0 5px 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 12px rgba(0, 255, 102, 0.3);
         }
 
         .subtitle {
             color: var(--neon-green);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
         }
 
-        .meta-info {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-top: 10px;
+        .team-box {
+            background: rgba(255, 0, 85, 0.08);
+            border: 1px solid var(--cyber-pink);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 25px;
+            box-shadow: inset 0 0 15px rgba(255, 0, 85, 0.15);
+        }
+
+        .team-title {
+            color: var(--cyber-pink);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: block;
+            margin-bottom: 6px;
+            font-size: 1.1rem;
+        }
+
+        .crew {
+            color: #ffffff;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            font-size: 1.05rem;
         }
 
         h2 {
             color: #ffffff;
-            border-left: 4px solid var(--neon-green);
+            border-left: 4px solid var(--cyber-blue);
             padding-left: 15px;
-            margin-top: 40px;
+            margin-top: 55px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            font-size: 1.5rem;
+            letter-spacing: 1.5px;
         }
 
         h3 {
             color: var(--neon-green);
-            margin-bottom: 5px;
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
         }
 
         p {
             color: var(--text-color);
+            font-size: 1.05rem;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        ul {
+            padding-left: 24px;
+            margin-bottom: 0;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+        }
+
+        .highlight-text {
+            color: var(--cyber-blue);
+            font-weight: bold;
         }
 
         .grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px;
+            gap: 24px;
+            margin-bottom: 40px;
         }
 
         .card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 20px;
+            padding: 24px;
             transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--neon-green);
+            opacity: 0.8;
+        }
+
+        .card.crit::before {
+            background: var(--cyber-pink);
         }
 
         .card:hover {
             border-color: var(--neon-green);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(0, 255, 102, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 30px rgba(0, 255, 102, 0.15);
+        }
+
+        .card.crit:hover {
+            border-color: var(--cyber-pink);
+            box-shadow: 0 6px 30px rgba(255, 0, 85, 0.15);
         }
 
         .day-badge {
             background-color: rgba(0, 255, 102, 0.1);
             color: var(--neon-green);
-            padding: 4px 10px;
+            padding: 4px 14px;
             border-radius: 4px;
             font-weight: bold;
             font-size: 0.85rem;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 14px;
             border: 1px solid var(--neon-green);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .kpi-box {
-            background-color: #181818;
-            border-left: 3px solid var(--text-muted);
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 0 6px 6px 0;
+        .day-badge.crit {
+            background-color: rgba(255, 0, 85, 0.1);
+            color: var(--cyber-pink);
+            border-color: var(--cyber-pink);
         }
 
-        .kpi-box h4 {
-            margin: 0 0 5px 0;
+        .kpi-container {
+            margin-top: 30px;
+        }
+
+        .kpi-detailed {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 28px;
+            margin-bottom: 35px;
+            border-left: 4px solid var(--cyber-blue);
+        }
+
+        .kpi-detailed.retail-layer {
+            border-left-color: var(--cyber-pink);
+        }
+
+        .kpi-detailed.ops-layer {
+            border-left-color: var(--neon-green);
+        }
+
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .kpi-name {
+            font-size: 1.35rem;
+            font-weight: bold;
             color: #ffffff;
+            margin: 0;
+            letter-spacing: 0.5px;
         }
 
-        .formula {
+        .kpi-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .tag-geo { background: rgba(0, 240, 255, 0.1); color: var(--cyber-blue); border: 1px solid var(--cyber-blue); }
+        .tag-retail { background: rgba(255, 0, 85, 0.1); color: var(--cyber-pink); border: 1px solid var(--cyber-pink); }
+        .tag-ops { background: rgba(0, 255, 102, 0.1); color: var(--neon-green); border: 1px solid var(--neon-green); }
+
+        .kpi-block {
+            margin-bottom: 18px;
+        }
+
+        .kpi-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .kpi-label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .formula-box {
             font-family: 'Courier New', Courier, monospace;
             color: var(--neon-green);
-            background: #252525;
-            padding: 4px 8px;
+            background: #161922;
+            padding: 10px 14px;
             border-radius: 4px;
-            display: inline-block;
-            margin-top: 5px;
+            border: 1px solid #222836;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .sql-box {
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--cyber-blue);
+            background-color: var(--sql-bg);
+            padding: 14px 18px;
+            border-radius: 6px;
+            border: 1px solid #1a1f2c;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            line-height: 1.5;
+        }
+
+        .limitation-box {
+            background-color: rgba(255, 153, 0, 0.04);
+            border: 1px dashed var(--warning-orange);
+            border-radius: 6px;
+            padding: 14px 18px;
+            margin-top: 14px;
+        }
+
+        .limitation-title {
+            color: var(--warning-orange);
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .limitation-text {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--text-color);
+            line-height: 1.5;
+        }
+
+        .macro-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            background-color: #0d0f15;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .macro-table th, .macro-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+
+        .macro-table th {
+            background-color: #161922;
+            color: var(--cyber-blue);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .macro-table tr:last-child td {
+            border-bottom: none;
         }
 
         footer {
             text-align: center;
-            margin-top: 60px;
-            padding-top: 20px;
+            margin-top: 90px;
+            padding: 30px 0;
             border-top: 1px solid var(--border-color);
             color: var(--text-muted);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
         }
     </style>
 </head>
@@ -140,90 +362,274 @@
 
 <div class="container">
     <header>
+        <div class="lobster-container">
+            <svg class="lobster-logo" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 46 35 Q 30 12 12 4" fill="none" stroke="#ff0055" stroke-width="2" stroke-linecap="round"/>
+                <path d="M 54 35 Q 70 12 88 4" fill="none" stroke="#ff0055" stroke-width="2" stroke-linecap="round"/>
+                
+                <path d="M 36 46 C 18 42 6 54 8 72 C 11 84 26 82 30 68 C 32 60 30 52 36 50 Z" fill="#ff0055" />
+                <path d="M 8 72 C 2 64 6 52 16 50" fill="none" stroke="#00f0ff" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M 36 50 L 28 62 L 32 66 Z" fill="#d00045" />
+                
+                <path d="M 64 46 C 82 42 94 54 92 72 C 89 84 74 82 70 68 C 68 60 70 52 64 50 Z" fill="#ff0055" />
+                <path d="M 92 72 C 98 64 94 52 84 50" fill="none" stroke="#00f0ff" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M 64 50 L 72 62 L 68 66 Z" fill="#d00045" />
+                
+                <path d="M 42 45 Q 30 46 34 56 Q 40 54 42 48 Z" fill="#b0003c" />
+                <path d="M 58 45 Q 70 46 66 56 Q 60 54 58 48 Z" fill="#b0003c" />
+                
+                <path d="M 42 35 Q 50 31 58 35 Q 61 56 57 76 L 43 76 Q 39 56 42 35 Z" fill="#ff0055" />
+                
+                <circle cx="44" cy="36" r="1.8" fill="#00ff66"/>
+                <circle cx="56" cy="36" r="1.8" fill="#00ff66"/>
+                
+                <path d="M 43 78 L 57 78 L 55 85 L 45 85 Z" fill="#e0004c" />
+                <path d="M 44 87 L 56 87 L 54 94 L 46 94 Z" fill="#c00041" />
+                <path d="M 45 96 L 55 96 L 53 103 L 47 103 Z" fill="#a00034" />
+                <path d="M 46 105 L 54 105 L 55 111 L 45 111 Z" fill="#800028" />
+                
+                <path d="M 45 111 L 32 122 L 50 119 L 68 122 L 55 111 Z" fill="#ff0055" />
+                <circle cx="50" cy="115" r="1.5" fill="#00f0ff" />
+                
+                <path d="M 42 54 L 26 57 L 22 66" fill="none" stroke="#00f0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M 42 61 L 24 65 L 18 75" fill="none" stroke="#00f0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M 43 68 L 24 73 L 20 84" fill="none" stroke="#00f0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M 43 74 L 26 81 L 24 92" fill="none" stroke="#00f0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                
+                <path d="M 58 54 L 74 57 L 78 66" fill="none" stroke="#00f0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M 58 61 L 76 65 L 82 75" fill="none" stroke="#00f0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M 57 68 L 76 73 L 80 84" fill="none" stroke="#00f0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M 57 74 L 74 81 L 76 92" fill="none" stroke="#00f0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+
         <h1>GoExplore Analytics Architecture</h1>
-        <div class="subtitle">10-Day Project Roadmap & Executive Strategy</div>
-        <div class="meta-info">Stack: Google Sheets ➔ BigQuery (SQL) ➔ Data Studio | Team: WBS Analytics Quartet</div>
+        <div class="subtitle">10-Day Production Sprint Roadmap & Strategy</div>
+        
+        <div class="team-box">
+            <span class="team-title">⚡ BI Core Squad: THE LOBSTER LOOKERS ⚡</span>
+            <span class="crew">Blessy | Ayo | Iliya | Andreas</span>
+        </div>
     </header>
 
-    <h2>1. Data Pipeline & Workflow</h2>
-    <p>Our approach shifts the focus from manual spreadsheet calculation to an automated cloud infrastructure. We treat raw tables as database relations, ensuring scalable, reproducible analytics for CEO Sabah.</p>
+    <h2>1. Exploratory Data Audit (Foundational Matrix)</h2>
+    <p>Following a deep architectural profiling of the legacy spreadsheets inherited from the predecessor, the BI engine maps operations onto explicit entity relations. This strict metadata layout eliminates calculation anomalies during scaling:</p>
+    
+    <div class="card" style="margin-bottom: 35px;">
+        <h3>Audited Structural Parameters:</h3>
+        <ul>
+            <li><span class="highlight-text">4 Relational Entities:</span> <code>retailers</code> (B2B network attributes), <code>products</code> (product ledger dimension master), <code>daily_sales</code> (unaggregated core transaction journal), and <code>methods</code> (distribution channel identifiers).</li>
+            <li><span class="highlight-text">Transactional Scale:</span> A total database volume of <span class="highlight-text" style="color: var(--cyber-pink);">149,257 unique historical row records</span> spanning historical execution files from January 2015 through July 2018.</li>
+            <li><span class="highlight-text">Geographic Distribution:</span> 21 active baseline international countries currently logging continuous distribution records (e.g., United States, Germany, France, Sweden, Japan, Australia, Canada).</li>
+            <li><span class="highlight-text">Distributor Classifications:</span> 8 distinct retailer categories mapped directly into Specialists (<i>Golf Shop, Eyewear Store, Equipment Rental Store</i>) and Generalists (<i>Outdoors Shop, Sports Store, Department Store, Warehouse Store, Direct Marketing</i>).</li>
+            <li><span class="highlight-text">Channel Vectors:</span> 7 operational ordering streams logged inside backend indices (Fax, Telephone, Mail, E-mail, Web, Sales visit, Special) to accurately gauge automated vs. manual operational patterns.</li>
+            <li><span class="highlight-text">Calculated Metrics:</span> The matrix does not provide a native total financial revenue field. Total sales value must be computed programmatically on row execution level utilizing vector mathematics: <code style="color: var(--cyber-blue);">Quantity * Unit sale price</code>.</li>
+        </ul>
+    </div>
 
-    <h2>2. Tight 10-Day Sprint Timeline</h2>
+    <h2>2. High-Performance 10-Day Project Pipeline</h2>
     <div class="grid">
         
         <div class="card">
             <span class="day-badge">Day 1 (Today)</span>
-            <h3>Data Discovery & External Enrichment</h3>
-            <p>Setup of the centralized Google Sheet. Manual collection and ingestion of macroeconomic markers (Population and GDP figures for Germany, France, Sweden, and expansion targets: Czech Republic, Norway, Poland, Portugal) from open statistical databases.</p>
+            <h3>Data Discovery & Macroeconomic Ingestion</h3>
+            <p>Initialization of the source cloud repository inside Google Sheets. Programmatic compilation and ingestion of public macroeconomic structural datasets (<span class="highlight-text">Population Metrics & Nominal GDP Vectors</span>) for all 21 active countries and the 4 target expansion regions from verified <strong>Eurostat</strong> and <strong>World Bank</strong> tables.</p>
         </div>
 
         <div class="card">
             <span class="day-badge">Day 2 - 3</span>
-            <h3>Cloud Ingestion & Table Linking</h3>
-            <p>Connecting the centralized Google Sheet to Google BigQuery as a live data abstraction layer. Verification of schemas, primary/foreign keys, and data types across the operational tables.</p>
+            <h3>Strict Data Cleaning, Profiling & Cloud Ingestion</h3>
+            <p>Implementation of an exhaustive, industry-standard <span class="highlight-text">Data Cleaning Check</span> to prevent analytical skewed errors. Profiling records for null pointers, removing duplicate strings, sanitizing mismatched datatypes, and running comparative integrity filters to flag broken logs (e.g., checking for corruption loops where <code>Unit sale price &gt; Unit price</code>). Connecting the sanitized sheets to <strong>Google BigQuery</strong> via an external database link layer.</p>
         </div>
 
         <div class="card">
             <span class="day-badge">Day 4 - 5</span>
-            <h3>Backend Engineering (SQL Development)</h3>
-            <p>Writing and optimizing structured SQL queries in BigQuery to handle relational <code>LEFT JOINs</code> and complex conditional aggregations for the business layers.</p>
+            <h3>Data Warehouse Engineering & SQL Data Modeling</h3>
+            <p>Developing optimized, scalable SQL queries directly inside the BigQuery cloud environment. Implementing primary/foreign key joins (<code>LEFT JOIN</code>, <code>INNER JOIN</code>) to construct structured analytical views, offloading heavy processing tasks completely onto the BigQuery infrastructure to guarantee low execution latencies.</p>
         </div>
 
         <div class="card">
             <span class="day-badge">Day 6 - 7</span>
-            <h3>Frontend Architecture (Data Studio UI)</h3>
-            <p>Linking BigQuery analytical views directly to Google Data Studio. Building dynamic cross-filters, interactive geographical components, and structural performance metrics.</p>
+            <h3>BI Frontend Architecture & UI Design</h3>
+            <p>Connecting the validated BigQuery analytical output layers to <strong>Google Data Studio</strong>. Designing a production-ready, executive-level dashboard interface equipped with geo-maps, multi-dimensional time series, and retailer cross-filters explicitly customized for CEO Sabah's business intelligence needs.</p>
         </div>
 
         <div class="card">
             <span class="day-badge">Day 8 - 9</span>
-            <h3>Insight Extraction & Storytelling Synthesis</h3>
-            <p>Analyzing dashboard results to extract concrete business suggestions for Sabah. Drafting the non-technical executive pitch script to ensure maximum strategic impact.</p>
+            <h3>Analytical Synthesis & Executive Storytelling</h3>
+            <p>Transforming complex warehouse data summaries into clear, actionable corporate strategies. Extracting mathematical projections for the 4 European expansion territories and building a cohesive, non-technical executive narrative tailored to high-level corporate steering.</p>
         </div>
 
-        <div class="card" style="border-color: #ff3366;">
-            <span class="day-badge" style="color: #ff3366; background: rgba(255,51,102,0.1); border-color: #ff3366;">Day 10</span>
-            <h3>Dry Runs, Technical Audit & Showdown</h3>
-            <p><strong>Morning:</strong> Complete system integration check, full technical dry runs, and team rehearsal of the presentation layout.<br><strong>Afternoon:</strong> Final live presentation to CEO Sabah and the executive board.</p>
+        <div class="card crit">
+            <span class="day-badge crit">Day 10</span>
+            <h3>Pipeline End-To-End Audit, Dry Runs & Board Showdown</h3>
+            <p><strong>Morning Session:</strong> Executing comprehensive technical stress tests, validating pipeline query synchronization, and running team presentation rehearsals.<br>
+            <strong>Afternoon Session:</strong> Live operational deployment and formal dashboard delivery before the instructor and executive simulation board, passing enterprise control tools to CEO Sabah.</p>
         </div>
 
     </div>
 
-    <h2>3. Targeted KPI Framework</h2>
-    <p>A collection of 5 key business metrics carefully split between geographical expansion data and B2B distributor network performance.</p>
+    <h2>3. Production KPI Matrix Blueprint</h2>
+    <p>These 5 target metrics directly resolve the executive inquiries concerning European market entry scaling and B2B partner performance evaluation.</p>
 
-    <div class="kpi-box">
-        <h4>KPI 1: Revenue per Capita (Demographic Multiplier)</h4>
-        <p>Establishes the historical income generated per 1 Million citizens in active markets (e.g., Sweden) to build a robust baseline expectation for new frontiers.</p>
-        <div class="formula">Formula: Total Country Revenue / Country Population (Millions)</div>
-    </div>
+    <div class="kpi-container">
+        
+        <div class="kpi-detailed">
+            <div class="kpi-header">
+                <p class="kpi-name">KPI 1: Total Revenue by Country (Baseline Portfolio Distribution)</p>
+                <span class="kpi-tag tag-geo">Geo-Expansion</span>
+            </div>
+            <div class="kpi-block">
+                <span class="kpi-label">Strategic Business Value:</span>
+                <p>Isolates and ranks financial performance across the 21 active international territories. This establishes the absolute market volume baseline necessary to evaluate high-performing regions and construct reliable benchmarks for prospective expansion countries.</p>
+            </div>
+            <div class="kpi-block">
+                <span class="kpi-label">Analytical Formula:</span>
+                <div class="formula-box">Total Financial Revenue = SUM(Quantity × Unit sale price) GROUP BY Country</div>
+            </div>
+            <div class="kpi-block">
+                <span class="kpi-label">BigQuery SQL Engine Implementation:</span>
+                <div class="sql-box">SELECT 
+    r.Country, 
+    SUM(s.Quantity * s.Unit_sale_price) AS Total_Revenue
+FROM `go_explore_prod.daily_sales` AS s
+INNER JOIN `go_explore_prod.retailers` AS r 
+    ON s.Retailer_code = r.Retailer_code
+GROUP BY r.Country
+ORDER BY Total_Revenue DESC;</div>
+            </div>
+        </div>
 
-    <div class="kpi-box">
-        <h4>KPI 2: Revenue-to-GDP Elasticity Index (Purchasing Power Alignment)</h4>
-        <p>Safeguards expansion margins by mapping historical sales explicitly against national wealth index parameters, isolating premium consumer potential in countries like Norway.</p>
-        <div class="formula">Formula: Total Country Revenue / National GDP (Billions USD)</div>
-    </div>
+        <div class="kpi-detailed">
+            <div class="kpi-header">
+                <p class="kpi-name">KPI 2: Revenue per Capita (Demographic Proportional Scale)</p>
+                <span class="kpi-tag tag-geo">Geo-Expansion</span>
+            </div>
+            <div class="kpi-block">
+                <span class="kpi-label">Strategic Business Value:</span>
+                <p>Normalizes raw country performance against population vectors to remove demographic scale bias. By deriving a "Revenue per 1 Million Inhabitants" metric from mature markets (e.g., Sweden), we construct a scaling multiplier. This multiplier is cross-referenced with target market benchmarks to forecast expected market capture limits.</p>
+                
+                <span class="kpi-label">Ingested Target Macro-Economic Reference Data:</span>
+                <table class="macro-table">
+                    <thead>
+                        <tr>
+                            <th>Target Expansion Country</th>
+                            <th>Population Metric (Eurostat)</th>
+                            <th>Nominal GDP (World Bank Baseline)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Norway</td><td>5.5 Million</td><td>$580 Billion USD</td></tr>
+                        <tr><td>Czech Republic</td><td>10.8 Million</td><td>$330 Billion USD</td></tr>
+                        <tr><td>Poland</td><td>36.8 Million</td><td>$860 Billion USD</td></tr>
+                        <tr><td>Portugal</td><td>10.4 Million</td><td>$270 Billion USD</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="kpi-block">
+                <span class="kpi-label">Analytical Formula:</span>
+                <div class="formula-box">Revenue per Capita = Total Country Revenue / Country Population (in Millions)</div>
+            </div>
+            <div class="kpi-block">
+                <span class="kpi-label">BigQuery SQL Engine Implementation:</span>
+                <div class="sql-box">SELECT 
+    r.Country, 
+    SUM(s.Quantity * s.Unit_sale_price) / ext.Population_Millions AS Revenue_per_Capita,
+    ext.GDP_Billions_USD
+FROM `go_explore_prod.daily_sales` AS s
+INNER JOIN `go_explore_prod.retailers` AS r 
+    ON s.Retailer_code = r.Retailer_code
+LEFT JOIN `go_explore_prod.external_market_data` AS ext 
+    ON r.Country = ext.Country
+GROUP BY r.Country, ext.Population_Millions, ext.GDP_Billions_USD
+ORDER BY Revenue_per_Capita DESC;</div>
+            </div>
+        </div>
 
-    <div class="kpi-box">
-        <h4>KPI 3: Average Order Value (AOV) by Retailer Segment</h4>
-        <p>Directly answers whether specialty retail stores (e.g., Golf, Eyewear) process larger basket sizes compared to general sports and outdoor retailers.</p>
-        <div class="formula">Formula: Total Segment Revenue / Total Segment Order Count</div>
-    </div>
+        <div class="kpi-detailed retail-layer">
+            <div class="kpi-header">
+                <p class="kpi-name">KPI 3: Average Transaction Value (ATV by Retailer Segment)</p>
+                <span class="kpi-tag tag-retail">Retailer-Analysis</span>
+            </div>
+            <div class="kpi-block">
+                <span class="kpi-label">Strategic Business Value:</span>
+                <p>Directly evaluates the purchasing capacity of specialized accounts versus broad general networks, resolving the primary query raised by the Head of Retailer Connections. This reveals whether high-intent specialty shops yield higher capital intake per transaction block than general stores.</p>
+            </div>
+            <div class="kpi-block">
+                <span class="kpi-label">Analytical Formula:</span>
+                <div class="formula-box">ATV = Total Segment Financial Revenue / Total Unique Transaction Blocks (Date || Retailer)</div>
+            </div>
+            <div class="kpi-block">
+                <span class="kpi-label">BigQuery SQL Engine Implementation:</span>
+                <div class="sql-box">SELECT 
+    r.Type AS Retailer_Segment_Type, 
+    SUM(s.Quantity * s.Unit_sale_price) / COUNT(DISTINCT CONCAT(CAST(s.Date AS STRING), '-', CAST(s.Retailer_code AS STRING))) AS Average_Transaction_Value
+FROM `go_explore_prod.daily_sales` AS s
+INNER JOIN `go_explore_prod.retailers` AS r 
+    ON s.Retailer_code = r.Retailer_code
+GROUP BY r.Type
+ORDER BY Average_Transaction_Value DESC;</div>
+            </div>
+            <div class="limitation-box">
+                <span class="limitation-title">⚠️ Data Architecture Constraint Warning (For Instructor Defending)</span>
+                <p class="limitation-text">The string concatenation <code>CONCAT(Date, '-', Retailer_code)</code> serves as a critical macro-transaction proxy since a distinct, native transaction <code>Order_ID</code> is absent from the unaggregated journal ledger. If a partner locations commits multiple unique purchase orders within a single calendar date, the SQL syntax consolidates them into a singular daily financial unit. This architectural boundary is explicitly surfaced as part of the pipeline limitations during data defense.</p>
+            </div>
+        </div>
 
-    <div class="kpi-box">
-        <h4>KPI 4: Order Frequency Density (Operational Efficiency)</h4>
-        <p>Measures the purchasing consistency across distributors, identifying low-maintenance high-volume partners versus resource-intensive micro-accounts.</p>
-        <div class="formula">Formula: Total Transaction Records / Count of Unique Active Stores</div>
-    </div>
+        <div class="kpi-detailed retail-layer">
+            <div class="kpi-header">
+                <p class="kpi-name">KPI 4: Average Unit Sale Price (Segment Pricing Position Master)</p>
+                <span class="kpi-tag tag-retail">Retailer-Analysis</span>
+            </div>
+            <div class="kpi-block">
+                <span class="kpi-label">Strategic Business Value:</span>
+                <p>Introduces the secondary validation vector required for a complete partner network assessment. While KPI 3 determines the total volume of daily orders, KPI 4 profiles the product tiers themselves. It verifies whether specialty distributors (e.g., <i>Golf Shops</i>, <i>Eyewear Stores</i>) successfully shift high-margin, premium equipment price ranges compared to general consumer networks.</p>
+            </div>
+            <div class="kpi-block">
+                <span class="kpi-label">Analytical Formula:</span>
+                <div class="formula-box">Average Unit Sale Price = AVG(Unit sale price) GROUP BY Retailer Type</div>
+            </div>
+            <div class="kpi-block">
+                <span class="kpi-label">BigQuery SQL Engine Implementation:</span>
+                <div class="sql-box">SELECT 
+    r.Type AS Retailer_Segment_Type, 
+    AVG(s.Unit_sale_price) AS Avg_Unit_Sale_Price,
+    MAX(s.Unit_sale_price) AS Max_Unit_Sale_Price
+FROM `go_explore_prod.daily_sales` AS s
+INNER JOIN `go_explore_prod.retailers` AS r 
+    ON s.Retailer_code = r.Retailer_code
+GROUP BY r.Type
+ORDER BY Avg_Unit_Sale_Price DESC;</div>
+            </div>
+        </div>
 
-    <div class="kpi-box">
-        <h4>KPI 5: Digital Channel Penetration Rate</h4>
-        <p>Tracks the operational automation level of incoming orders, monitoring what percentage of total business scales cleanly through automated web infrastructure.</p>
-        <div class="formula">Formula: (Web Revenue / Total Revenue All Channels) * 100</div>
+        <div class="kpi-detailed ops-layer">
+            <div class="kpi-header">
+                <p class="kpi-name">KPI 5: Web Channel Penetration Rate (Digital Optimization Speed)</p>
+                <span class="kpi-tag tag-ops">Operations-Efficiency</span>
+            </div>
+            <div class="kpi-block">
+                <span class="kpi-label">Strategic Business Value:</span>
+                <p>Provides CEO Sabah with operational efficiency markers mapping organizational scalability. By isolating transaction rows generated via channel stream index code 5 (<code>Web</code>) against high-overhead manual methods (Fax, Phone, Mail), the dashboard measures the company's automated scaling velocity.</p>
+            </div>
+            <div class="kpi-block">
+                <span class="kpi-label">Analytical Formula:</span>
+                <div class="formula-box">Web Channel Penetration Rate (\%) = (Web-Generated Revenue / Total Revenue Across All Channels) × 100</div>
+            </div>
+            <div class="kpi-block">
+                <span class="kpi-label">BigQuery SQL Engine Implementation:</span>
+                <div class="sql-box">SELECT 
+    SUM(CASE WHEN s.Order_method_code = 5 THEN s.Quantity * s.Unit_sale_price ELSE 0 END) AS Web_Revenue,
+    SUM(s.Quantity * s.Unit_sale_price) AS Total_Global_Revenue,
+    (SUM(CASE WHEN s.Order_method_code = 5 THEN s.Quantity * s.Unit_sale_price ELSE 0 END) / SUM(s.Quantity * s.Unit_sale_price)) * 100 AS Web_Penetration_Rate
+FROM `go_explore_prod.daily_sales` AS s;</div>
+            </div>
+        </div>
+
     </div>
 
     <footer>
-        GoExplore Executive Strategy Blueprint &copy; 2026 - Designed for Agile Business Intelligence
+        GoExplore Enterprise Analytics Blueprints &copy; 2026 | Deployed via GitHub Pages Automation | Engine Layer Built by The Lobster Lookers
     </footer>
 </div>
 
