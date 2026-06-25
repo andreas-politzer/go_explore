@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Data Stack — Setup Guide</title>
+    <style>
+        :root {
+            --bg: #0f1117;
+            --surface: #161b27;
+            --surface-2: #1e2535;
+            --border: #252d3d;
+            --text: #cbd5e1;
+            --text-strong: #f1f5f9;
+            --text-muted: #64748b;
+            --orange: #f97316;
+            --orange-dim: rgba(249,115,22,0.1);
+            --orange-border: rgba(249,115,22,0.3);
+            --blue: #38bdf8;
+            --blue-dim: rgba(56,189,248,0.08);
+            --blue-border: rgba(56,189,248,0.25);
+            --red: #f87171;
+            --red-dim: rgba(248,113,113,0.08);
+            --red-border: rgba(248,113,113,0.3);
+            --green: #4ade80;
+            --green-dim: rgba(74,222,128,0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'SF Pro Text', -apple-system, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            font-size: 16px;
+        }
+
+        /* ── LAYOUT ── */
+        .layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: 100vh;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 32px 0;
+        }
+
+        .sidebar-logo {
+            padding: 0 24px 28px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+
+        .sidebar-logo .title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-logo .name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-strong);
+        }
+
+        .nav-section {
+            padding: 0 16px;
+            margin-bottom: 24px;
+        }
+
+        .nav-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            padding: 0 8px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .nav-label.world1 { color: var(--orange); }
+        .nav-label.world2 { color: var(--blue); }
+
+        .nav-link {
+            display: block;
+            padding: 6px 8px;
+            border-radius: 5px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: all 0.15s;
+        }
+
+        .nav-link:hover {
+            background: var(--surface-2);
+            color: var(--text-strong);
+        }
+
+        .nav-link.active {
+            background: var(--surface-2);
+            color: var(--text-strong);
+        }
+
+        /* ── MAIN ── */
+        main {
+            max-width: 780px;
+            padding: 60px 48px 120px;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            margin-bottom: 64px;
+            padding-bottom: 48px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-eyebrow {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-strong);
+            line-height: 1.2;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text);
+            max-width: 560px;
+        }
+
+        /* ── ARCHITECTURE DIAGRAM ── */
+        .arch {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin: 40px 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 28px 32px;
+            overflow-x: auto;
+        }
+
+        .arch-world {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .arch-world-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .arch-world-label.w1 { color: var(--orange); }
+        .arch-world-label.w2 { color: var(--blue); }
+
+        .arch-tool {
+            background: var(--surface-2);
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+            border-left: 3px solid transparent;
+        }
+
+        .arch-tool.orange { border-color: var(--orange); }
+        .arch-tool.blue { border-color: var(--blue); }
+
+        .arch-tool .tool-name {
+            color: var(--text-strong);
+            font-weight: 600;
+            display: block;
+        }
+
+        .arch-tool .tool-desc {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .arch-divider {
+            padding: 0 24px;
+            color: var(--border);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        /* ── SECTIONS ── */
+        .section {
+            margin-bottom: 72px;
+            scroll-margin-top: 32px;
+        }
+
+        .section-eyebrow {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .section-eyebrow.foundation { color: var(--text-muted); }
+        .section-eyebrow.world1 { color: var(--orange); }
+        .section-eyebrow.world2 { color: var(--blue); }
+
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-strong);
+            letter-spacing: -0.3px;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-strong);
+            margin: 36px 0 14px;
+        }
+
+        p {
+            color: var(--text);
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
+
+        /* ── CODE ── */
+        code {
+            font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.875em;
+            background: var(--surface-2);
+            color: var(--blue);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .code-block {
+            position: relative;
+            background: #0a0c12;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin: 16px 0 24px;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: #e2e8f0;
+            white-space: pre;
+        }
+
+        .code-label {
+            font-family: 'SF Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .comment { color: #4a5568; }
+        .keyword { color: #f97316; }
+        .string { color: #4ade80; }
+        .func { color: #38bdf8; }
+
+        /* ── BOXES ── */
+        .warning-box {
+            background: var(--red-dim);
+            border: 1px solid var(--red-border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .warning-box .box-title {
+            color: var(--red);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .warning-box p { color: var(--text); margin: 0; font-size: 0.95rem; }
+
+        .info-box {
+            background: var(--blue-dim);
+            border: 1px solid var(--blue-border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .info-box .box-title {
+            color: var(--blue);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .info-box p { color: var(--text); margin: 0; font-size: 0.95rem; }
+
+        .lesson-box {
+            background: var(--orange-dim);
+            border: 1px solid var(--orange-border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .lesson-box .box-title {
+            color: var(--orange);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .lesson-box p { color: var(--text); margin: 0; font-size: 0.95rem; }
+
+        /* ── STEP LIST ── */
+        .steps {
+            list-style: none;
+            counter-reset: steps;
+            margin: 16px 0 24px;
+        }
+
+        .steps li {
+            counter-increment: steps;
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+
+        .steps li::before {
+            content: counter(steps);
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .steps li .step-content { flex: 1; }
+        .steps li .step-title {
+            color: var(--text-strong);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .steps li p { margin: 0; font-size: 0.95rem; }
+
+        /* ── TERM TABLE ── */
+        .term-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 24px;
+            background: var(--surface);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .term-table th {
+            background: var(--surface-2);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 12px 16px;
+            text-align: left;
+        }
+
+        .term-table td {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+            font-size: 0.925rem;
+            vertical-align: top;
+        }
+
+        .term-table td:first-child {
+            font-family: 'SF Mono', monospace;
+            color: var(--orange);
+            white-space: nowrap;
+            font-size: 0.875rem;
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 48px 0;
+        }
+
+        /* ── WORLD BADGE ── */
+        .world-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .world-badge.w1 {
+            background: var(--orange-dim);
+            color: var(--orange);
+            border: 1px solid var(--orange-border);
+        }
+
+        .world-badge.w2 {
+            background: var(--blue-dim);
+            color: var(--blue);
+            border: 1px solid var(--blue-border);
+        }
+
+        @media (max-width: 768px) {
+            .layout { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            main { padding: 32px 20px 80px; }
+            h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <span class="title">Setup Guide</span>
+            <span class="name">Local Data Stack</span>
+        </div>
+
+        <div class="nav-section">
+            <span class="nav-label">Overview</span>
+            <a href="#overview" class="nav-link">What are we building?</a>
+            <a href="#foundation" class="nav-link">The Foundation</a>
+        </div>
+
+        <div class="nav-section">
+            <span class="nav-label world1">World 1 — Local</span>
+            <a href="#duckdb" class="nav-link">DuckDB in VS Code</a>
+            <a href="#metabase" class="nav-link">Metabase via Docker</a>
+        </div>
+
+        <div class="nav-section">
+            <span class="nav-label world2">World 2 — Team</span>
+            <a href="#browser" class="nav-link">BigQuery in the Browser</a>
+            <a href="#terminal" class="nav-link">BigQuery via Terminal</a>
+            <a href="#notebook" class="nav-link">BigQuery via Notebook</a>
+        </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main>
+
+        <!-- HERO -->
+        <div class="hero" id="overview">
+            <div class="hero-eyebrow">Local Data Stack — Setup Guide</div>
+            <h1>Two environments,<br>one machine.</h1>
+            <p>This guide sets up a complete local data analysis environment on your Mac — independent of any cloud service — and connects it to the shared team project on Google BigQuery. No prior experience with any of these tools is assumed.</p>
+        </div>
+
+        <!-- ARCHITECTURE -->
+        <div class="arch">
+            <div class="arch-world">
+                <div class="arch-world-label w1">World 1 — Runs on your Mac</div>
+                <div class="arch-tool orange">
+                    <span class="tool-name">DuckDB in VS Code</span>
+                    <span class="tool-desc">Write and run SQL directly on local files</span>
+                </div>
+                <div class="arch-tool orange">
+                    <span class="tool-name">Metabase via Docker</span>
+                    <span class="tool-desc">Visual dashboards, no cloud required</span>
+                </div>
+            </div>
+            <div class="arch-divider">⟷</div>
+            <div class="arch-world">
+                <div class="arch-world-label w2">World 2 — Shared team project</div>
+                <div class="arch-tool blue">
+                    <span class="tool-name">BigQuery (Browser)</span>
+                    <span class="tool-desc">Query shared data in Google Cloud</span>
+                </div>
+                <div class="arch-tool blue">
+                    <span class="tool-name">BigQuery (Terminal + Notebook)</span>
+                    <span class="tool-desc">Programmatic access from your machine</span>
+                </div>
+            </div>
+        </div>
+
+        <p>World 1 is completely autonomous — it works without internet, without a Google account, and without any cost. World 2 connects you to the shared dataset your team already has running in Google Cloud.</p>
+
+        <hr class="divider">
+
+        <!-- FOUNDATION -->
+        <div class="section" id="foundation">
+            <div class="section-eyebrow foundation">Prerequisites</div>
+            <h2>The Foundation</h2>
+            <p>Before installing anything, you need two tools that everything else depends on: <strong style="color:var(--text-strong)">Homebrew</strong> and a basic understanding of the <strong style="color:var(--text-strong)">Terminal</strong>.</p>
+
+            <h3>The Terminal — the black window that does everything</h3>
+            <p>The Terminal is just a text-based way to talk to your Mac. Instead of clicking, you type a command and press Enter. That's it. Here are the only five commands you need to know:</p>
+
+            <table class="term-table">
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>What it does</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>pwd</td>
+                        <td>Shows which folder you are currently in</td>
+                        <td><code>/Users/iliya/projects</code></td>
+                    </tr>
+                    <tr>
+                        <td>ls</td>
+                        <td>Lists all files in the current folder</td>
+                        <td>Shows your files like Finder would</td>
+                    </tr>
+                    <tr>
+                        <td>cd</td>
+                        <td>Moves you into a different folder</td>
+                        <td><code>cd Developer/go_explore</code></td>
+                    </tr>
+                    <tr>
+                        <td>brew</td>
+                        <td>Installs software on your Mac</td>
+                        <td><code>brew install python</code></td>
+                    </tr>
+                    <tr>
+                        <td>python3</td>
+                        <td>Runs a Python script or opens Python</td>
+                        <td><code>python3 my_script.py</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Installing Homebrew</h3>
+            <p>Homebrew is a package manager — think of it as an App Store for the Terminal. Most developer tools are installed through it. Open the Terminal and paste this:</p>
+
+            <span class="code-label">Terminal</span>
+            <div class="code-block">
+                <pre>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</pre>
+            </div>
+
+            <p>Follow the prompts. It will ask for your Mac password. When it's done, verify it works:</p>
+
+            <span class="code-label">Terminal</span>
+            <div class="code-block">
+                <pre>brew --version</pre>
+            </div>
+
+            <p>You should see something like <code>Homebrew 4.x.x</code>. That means it's ready.</p>
+        </div>
+
+        <hr class="divider">
+
+        <!-- WORLD 1: DUCKDB -->
+        <div class="section" id="duckdb">
+            <div class="world-badge w1">World 1 — Local</div>
+            <div class="section-eyebrow world1">2.1 — DuckDB in VS Code</div>
+            <h2>Running SQL directly on your files</h2>
+
+            <p>DuckDB is a database engine that runs directly inside VS Code — no server, no setup, no running process in the background. You point it at a file, and you can query it with SQL immediately. It is extremely fast and handles files up to several gigabytes without issues.</p>
+
+            <div class="warning-box">
+                <div class="box-title">⚠️ Critical — Install exactly this extension</div>
+                <p>Search for <strong>DuckDB</strong> in the VS Code Extensions panel. Install the one by <strong>Charlie Jonas</strong> only. Do not install "DuckDB SQL Tools", "SQLTools", or any other SQL extension — they conflict with each other and will cause errors that are very difficult to diagnose. If you have any of those already installed, uninstall them first.</p>
+            </div>
+
+            <h3>Installing the extension</h3>
+            <ol class="steps">
+                <li>
+                    <div class="step-content">
+                        <div class="step-title">Open the Extensions panel in VS Code</div>
+                        <p>Press <code>Cmd + Shift + X</code> or click the Extensions icon in the left sidebar.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="step-content">
+                        <div class="step-title">Search for "DuckDB" and install the Charlie Jonas version</div>
+                        <p>It shows 12,000+ installs and version 0.0.27. Click Install.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="step-content">
+                        <div class="step-title">Reload VS Code when prompted</div>
+                        <p>A small reload button will appear after installation. Click it.</p>
+                    </div>
+                </li>
+            </ol>
+
+            <h3>Creating a database and loading data</h3>
+            <p>A DuckDB database is just a single file on your Mac with the extension <code>.db</code>. You create it by connecting to a filename that doesn't exist yet — DuckDB creates it automatically.</p>
+
+            <ol class="steps">
+                <li>
+                    <div class="step-content">
+                        <div class="step-title">Open your project folder in VS Code</div>
+                        <p>Use <code>File → Open Folder</code> and navigate to your project directory.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="step-content">
+                        <div class="step-title">Select your database</div>
+                        <p>Press <code>Cmd + Shift + P</code>, type <strong>DuckDB: Select Database</strong>, then choose <strong>Attach Existing</strong> and navigate to your <code>.db</code> file. If you don't have one yet, choose <strong>Create New Database</strong>.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="step-content">
+                        <div class="step-title">Load a CSV file into the database</div>
+                        <p>Create a new file called <code>queries.sql</code> and paste this, adjusting the file path and table name:</p>
+                    </div>
+                </li>
+            </ol>
+
+            <span class="code-label">queries.sql</span>
+            <div class="code-block">
+                <pre><span class="comment">-- Load a CSV file into a new table called "retailers"</span>
+<span class="keyword">CREATE TABLE</span> retailers <span class="keyword">AS</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="func">read_csv_auto</span>(<span class="string">'/absolute/path/to/your/file.csv'</span>);
+
+<span class="comment">-- Check what was loaded</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> retailers <span class="keyword">LIMIT</span> 5;</pre>
+            </div>
+
+            <p>To run the query, place your cursor anywhere inside it and press <code>Cmd + Shift + P</code> → <strong>DuckDB: Run Statement at Cursor</strong>. A results panel will open with your data.</p>
+
+            <div class="info-box">
+                <div class="box-title">Optional — Shift + Enter shortcut</div>
+                <p>If you prefer to run queries with <code>Shift + Enter</code> (like MySQL Workbench), open <code>Cmd + Shift + P</code> → <strong>Open Keyboard Shortcuts (JSON)</strong> and add this entry:</p>
+            </div>
+
+            <span class="code-label">keybindings.json</span>
+            <div class="code-block">
+                <pre>{
+    <span class="string">"key"</span>: <span class="string">"shift+enter"</span>,
+    <span class="string">"command"</span>: <span class="string">"duckdb.runStatementAtCursor"</span>,
+    <span class="string">"when"</span>: <span class="string">"editorTextFocus && editorLangId == 'sql'"</span>
+}</pre>
+            </div>
+
+            <div class="lesson-box">
+                <div class="box-title">💡 Column names with spaces or special characters</div>
+                <p>SQL is strict about column names. If a column name contains a space or special character — for example <code>Unit sale price</code> — you must wrap it in double quotes: <code>"Unit sale price"</code>. Text values (the actual data) always go in single quotes: <code>'Germany'</code>. Mixing these up is one of the most common sources of confusing errors.</p>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- WORLD 1: METABASE -->
+        <div class="section" id="metabase">
+            <div class="world-badge w1">World 1 — Local</div>
+            <div class="section-eyebrow world1">2.2 — Metabase via Docker</div>
+            <h2>Visual dashboards on your machine</h2>
+
+            <p>Metabase is a dashboarding tool — it turns your data into charts and interactive reports without writing any code. It runs in a web browser, but the server runs locally on your Mac inside Docker.</p>
+
+            <h3>What is Docker?</h3>
+            <p>Think of Docker as a way to run a fully self-contained mini-computer inside your Mac. That mini-computer has its own operating system, its own programs, and its own file system. Metabase runs inside one of these containers, completely isolated from the rest of your Mac. You start it with one command and stop it with one command.</p>
+
+            <p>Make sure Docker Desktop is running before proceeding — you should see the Docker icon in your menu bar.</p>
+
+            <h3>Starting Metabase</h3>
+
+            <div class="warning-box">
+                <div class="box-title">⚠️ Mount the folder, not the file</div>
+                <p>DuckDB creates temporary helper files (<code>.db.wal</code>) in the same folder as your database when it writes data. If Docker only knows about the single <code>.db</code> file, it cannot create these helpers and will crash. The solution is to mount the entire project folder into the container, not just the database file.</p>
+            </div>
+
+            <p>Replace <code>/Users/yourname/your-project-folder</code> with the actual path to your project folder on your Mac:</p>
+
+            <span class="code-label">Terminal</span>
+            <div class="code-block">
+                <pre>docker run -d \
+  -p 3000:3000 \
+  -v /Users/yourname/your-project-folder:/data \
+  --name metabase \
+  metabase/metabase</pre>
+            </div>
+
+            <p>This command tells Docker to start Metabase, make it available on port 3000, and map your local project folder to <code>/data</code> inside the container.</p>
+
+            <ol class="steps">
+                <li>
+                    <div class="step-content">
+                        <div class="step-title">Open Metabase in your browser</div>
+                        <p>Navigate to <code>http://localhost:3000</code>. The first start takes about 60 seconds.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="step-content">
+                        <div class="step-title">Create your admin account</div>
+                        <p>Fill in your name, email, and a password. This is just for local access — it doesn't connect to anything external.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="step-content">
+                        <div class="step-title">Connect your DuckDB database</div>
+                        <p>When asked to add a database, select <strong>DuckDB</strong>. For the database path, enter <code>/data/go_explore.db</code> — this is the path inside the container, not on your Mac.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="step-content">
+                        <div class="step-title">Start exploring</div>
+                        <p>Metabase will scan your tables. You can now build charts and dashboards by clicking through the interface — no SQL required, though you can use it if you prefer.</p>
+                    </div>
+                </li>
+            </ol>
+
+            <div class="info-box">
+                <div class="box-title">Stopping and restarting Metabase</div>
+                <p>To stop: <code>docker stop metabase</code>. To start again later: <code>docker start metabase</code>. You only need the long <code>docker run</code> command once — after that, start and stop are all you need.</p>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- WORLD 2: BROWSER -->
+        <div class="section" id="browser">
+            <div class="world-badge w2">World 2 — Team</div>
+            <div class="section-eyebrow world2">3.1 — BigQuery in the Browser</div>
+            <h2>Accessing the shared team project</h2>
+
+            <p>BigQuery is Google's cloud database service. Your team's data lives there, and multiple people can query it simultaneously from anywhere. The simplest way to access it is directly in the browser.</p>
+
+            <div class="warning-box">
+                <div class="box-title">⚠️ Always use the direct link</div>
+                <p>Do not navigate to BigQuery through the Google Cloud homepage — you will land in a generic console that may show a different or empty project. Always use the direct link with the project ID appended:</p>
+            </div>
+
+            <span class="code-label">Browser URL</span>
+            <div class="code-block">
+                <pre>https://console.cloud.google.com/bigquery?project=mystical-proj-500509</pre>
+            </div>
+
+            <p>Bookmark this URL. Once you open it, you will see the project's datasets and tables in the left panel. Click on any table to preview its contents, or click <strong>Query</strong> to open a SQL editor.</p>
+        </div>
+
+        <hr class="divider">
+
+        <!-- WORLD 2: TERMINAL -->
+        <div class="section" id="terminal">
+            <div class="world-badge w2">World 2 — Team</div>
+            <div class="section-eyebrow world2">3.2 — BigQuery via Terminal</div>
+            <h2>Connecting from your Mac directly</h2>
+
+            <p>Instead of using the browser, you can query BigQuery directly from your Mac — through the Terminal, through a Python script, or through a Jupyter Notebook. This requires installing Google's command-line tools and authenticating once.</p>
+
+            <h3>Step 1 — Install the Google Cloud SDK</h3>
+            <p>The Google Cloud SDK is a collection of command-line tools for working with Google Cloud services. Install it via Homebrew:</p>
+
+            <span class="code-label">Terminal</span>
+            <div class="code-block">
+                <pre>brew install google-cloud-sdk</pre>
+            </div>
+
+            <h3>Step 2 — Log in</h3>
+            <p>This command opens a browser window where you log in with your Google account. After logging in, close the browser — your Terminal is now authenticated.</p>
+
+            <span class="code-label">Terminal</span>
+            <div class="code-block">
+                <pre>gcloud auth application-default login</pre>
+            </div>
+
+            <h3>Step 3 — Set the project</h3>
+            <p>Tell gcloud which project you want to work with:</p>
+
+            <span class="code-label">Terminal</span>
+            <div class="code-block">
+                <pre>gcloud config set project mystical-proj-500509</pre>
+            </div>
+
+            <h3>Step 4 — Install the Python package</h3>
+            <p>This package lets Python talk to BigQuery:</p>
+
+            <span class="code-label">Terminal</span>
+            <div class="code-block">
+                <pre>pip3 install google-cloud-bigquery --break-system-packages</pre>
+            </div>
+
+            <h3>Step 5 — Run your first query</h3>
+            <p>Verify everything works with this test query:</p>
+
+            <span class="code-label">Terminal</span>
+            <div class="code-block">
+                <pre>python3 -c "
+from google.cloud import bigquery
+client = bigquery.Client(project=<span class="string">'mystical-proj-500509'</span>)
+result = client.query(<span class="string">"""
+    SELECT Country, COUNT(*) AS stores
+    FROM go_explore_project.retailers
+    GROUP BY Country
+    ORDER BY stores DESC
+    LIMIT 5
+"""</span>)
+<span class="keyword">for</span> row <span class="keyword">in</span> result:
+    <span class="func">print</span>(row)
+"</pre>
+            </div>
+
+            <p>You should see the top 5 countries by store count printed in your Terminal. If this works, your connection is fully set up.</p>
+        </div>
+
+        <hr class="divider">
+
+        <!-- WORLD 2: NOTEBOOK -->
+        <div class="section" id="notebook">
+            <div class="world-badge w2">World 2 — Team</div>
+            <div class="section-eyebrow world2">3.3 — BigQuery via Jupyter Notebook</div>
+            <h2>Interactive analysis in a Notebook</h2>
+
+            <p>A Jupyter Notebook lets you write code in small blocks called cells and run each one individually. Results appear directly below the cell — tables, charts, numbers. It is the most comfortable way to explore data interactively.</p>
+
+            <h3>Installing the required packages</h3>
+
+            <span class="code-label">Terminal</span>
+            <div class="code-block">
+                <pre>pip3 install jupyter pandas --break-system-packages</pre>
+            </div>
+
+            <h3>Starting a Notebook in VS Code</h3>
+            <p>Create a new file with the extension <code>.ipynb</code> in VS Code. It will open as a Notebook automatically. Each cell can contain Python code. Press <code>Shift + Enter</code> to run a cell and move to the next one.</p>
+
+            <h3>Querying BigQuery from a Notebook</h3>
+            <p>Paste this into the first cell and run it. After that, every cell can contain a pure SQL query:</p>
+
+            <span class="code-label">Jupyter Notebook — Cell 1 (run once)</span>
+            <div class="code-block">
+                <pre><span class="keyword">from</span> google.cloud <span class="keyword">import</span> bigquery
+
+client = bigquery.<span class="func">Client</span>(project=<span class="string">'mystical-proj-500509'</span>)
+
+<span class="keyword">def</span> <span class="func">bq</span>(sql):
+    <span class="string">"""Run a BigQuery SQL query and return a table."""</span>
+    <span class="keyword">return</span> client.<span class="func">query</span>(sql).<span class="func">to_dataframe</span>()</pre>
+            </div>
+
+            <span class="code-label">Jupyter Notebook — Any subsequent cell</span>
+            <div class="code-block">
+                <pre><span class="func">bq</span>(<span class="string">"""
+    SELECT
+        r.Country,
+        SUM(s.Quantity * s.Unit_sale_price) AS Total_Revenue
+    FROM go_explore_project.daily_sales AS s
+    JOIN go_explore_project.retailers AS r
+        ON s.Retailer_code = r.Retailer_code
+    GROUP BY r.Country
+    ORDER BY Total_Revenue DESC
+"""</span>)</pre>
+            </div>
+
+            <p>The result appears as a formatted table directly below the cell. You are now running SQL against the shared team dataset from your own machine, with results rendered locally.</p>
+
+            <div class="lesson-box">
+                <div class="box-title">💡 What just happened</div>
+                <p>Your Mac sent the SQL query to Google's servers via the authenticated connection you set up with <code>gcloud</code>. Google ran the query on their infrastructure and sent the result back to your machine. The data processing happened in the cloud — the result lives locally in your Notebook.</p>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+</body>
+</html>
