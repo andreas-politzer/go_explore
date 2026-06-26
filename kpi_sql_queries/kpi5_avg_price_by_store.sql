@@ -1,4 +1,4 @@
--- KPI 5: Preissegmentierung (Durchschnittlicher Produktpreis nach Händlertyp)
+-- KPI 5: Price segmentation (average product price by retailer type)
 SELECT
     r.Type AS store_type,
     ROUND(AVG(ds.Unit_sale_price), 2) AS avg_product_price

@@ -1,11 +1,14 @@
--- KPI 4: Aktivitätsdichte (Transaktionen und Verkaufstage pro Filiale)
+-- KPI 4: Orders per Store by Store Type
 SELECT
-    r.Retailer_name AS retailer_name,
-    r.Country AS country,
-    COUNT(*) AS total_transactions,
-    COUNT(DISTINCT ds.Date) AS unique_sales_days
+    r.Type AS store_type,
+    COUNT(DISTINCT CONCAT(CAST(ds.Date AS STRING), '-', CAST(ds.Retailer_code AS STRING))) AS total_orders,
+    COUNT(DISTINCT ds.Retailer_code) AS number_of_stores,
+    ROUND(
+        COUNT(DISTINCT CONCAT(CAST(ds.Date AS STRING), '-', CAST(ds.Retailer_code AS STRING))) /
+        COUNT(DISTINCT ds.Retailer_code),
+    2) AS orders_per_store
 FROM `mystical-proj-500509.go_explore_project.daily_sales` ds
-JOIN `mystical-proj-500509.go_explore_project.retailers` r 
+JOIN `mystical-proj-500509.go_explore_project.retailers` r
     ON ds.Retailer_code = r.Retailer_code
-GROUP BY retailer_name, country
-ORDER BY total_transactions DESC;
+GROUP BY store_type
+ORDER BY orders_per_store DESC;

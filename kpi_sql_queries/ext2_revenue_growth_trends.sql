@@ -1,4 +1,4 @@
--- Extension 2: Umsatzentwicklung und Trends im Zeitverlauf (Monatsebene)
+-- Extension 2: Revenue trends and developments over time (monthly)
 SELECT
     FORMAT_DATE('%Y-%m', ds.Date) AS year_month,
     ROUND(SUM(ds.Quantity * ds.Unit_sale_price), 2) AS monthly_revenue,

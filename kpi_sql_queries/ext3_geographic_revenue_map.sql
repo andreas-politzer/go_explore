@@ -1,4 +1,4 @@
--- Extension 3: Geografische Datenbasis für das spätere Map-Dashboard
+-- Extension 3: Geographical database for the future map dashboard
 SELECT
     r.Country AS country,
     COUNT(DISTINCT r.Retailer_code) AS total_active_stores,
