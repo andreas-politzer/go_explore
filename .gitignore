@@ -2,4 +2,4 @@
 *.pdf
 *.ipynb
 .vscode/
-*.sql
+queries.sql
